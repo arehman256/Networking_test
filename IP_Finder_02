@@ -1,0 +1,20 @@
+from pythonping import ping
+import re
+
+def remove_up_to_substring(s, substring):
+    index = s.find(substring)
+    if index != -1:
+        return s[index + len(substring):]
+    return s
+
+original_string = input("Please enter the website: ")
+substring = "w."
+result = remove_up_to_substring(original_string, substring)
+response_list = ping(result, count=1)
+
+for response in response_list:
+    ping_res = str(response)
+    ip_match = re.search(r'from (\d+\.\d+\.\d+\.\d+)', ping_res)
+    if ip_match:
+        ip_add = ip_match.group(1)
+        print("IP address of website is", ip_add)
