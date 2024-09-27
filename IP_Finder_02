@@ -17,4 +17,4 @@ for response in response_list:
     ip_match = re.search(r'from (\d+\.\d+\.\d+\.\d+)', ping_res)
     if ip_match:
         ip_add = ip_match.group(1)
-        print("IP address of website is", ip_add) 
+        print("IP address of website is", ip_add)
