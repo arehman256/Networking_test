@@ -1,0 +1,24 @@
+from pythonping import ping
+from icmplib import traceroute
+
+def remove_up_to_substring(s, substring):
+    index = s.find(substring)
+    if index != -1:
+        return s[index + len(substring):]
+    return s
+original_string = str(input("Please enter the website "))
+substring = "w."
+result = remove_up_to_substring(original_string, substring)
+print(result)
+response_list = ping(result, count=1)
+for response in response_list:
+    print()
+ping_res = str(response)
+if ", " in ping_res:
+    end_index = ping_res.index(", ")
+    ip_add = (ping_res[11:end_index])
+    print("IP address of website is",ip_add)
+
+hops = traceroute(result)
+for hop in hops:
+    print(f'{hop.distance}\t{hop.address}\t{hop.avg_rtt} ms')
