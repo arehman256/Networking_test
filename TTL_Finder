@@ -1,0 +1,19 @@
+import subprocess 
+import re
+def remove_up_to_substring(s, substring):
+    index = s.find(substring)
+    if index != -1:
+        return s[index + len(substring):]
+    return s
+original_string = str(input("Please enter the website url or IP Address:")) 
+substring = "w." 
+web_link = remove_up_to_substring(original_string, substring) 
+result = subprocess.run(['ping', web_link, '-n', '1'], capture_output=True, text=True)  
+TTL_find = str(result.stdout)
+TTL = str(TTL_find)
+if "TTL" in TTL:
+    start_index = TTL.index("TTL=")
+    end_index = TTL.index("\n\n")
+    TTL_val = (TTL_find[start_index:end_index])
+    TTL_val = re.sub("TTL=", "", TTL_val) 
+    print("The TTL value of Website url or IP is", TTL_val)
