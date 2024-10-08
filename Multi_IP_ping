@@ -1,0 +1,8 @@
+import subprocess
+# Using a context manager to handle file operations
+with open("IP.txt", "r") as my_file:
+    ip_list = my_file.read().splitlines()
+
+for ping_ip in ip_list:
+    result = subprocess.run(['ping', ping_ip, '-n', '4'], capture_output=True, text=True)  
+    print(result.stdout)
