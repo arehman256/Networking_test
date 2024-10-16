@@ -1,0 +1,29 @@
+import subprocess
+import re
+import xlsxwriter
+
+with open("IP.txt", "r") as my_file:
+    ip_list = my_file.read().splitlines()
+
+print(ip_list)
+
+workbook = xlsxwriter.Workbook('Host IP.xlsx')
+worksheet = workbook.add_worksheet()
+worksheet.write('A1', 'Hostname')
+worksheet.write('B1', 'IP Address')
+
+row = 1 
+
+for ping_ip in ip_list:
+    result = subprocess.run(['ping', ping_ip, '-n', '1'], capture_output=True, text=True)
+    result = str(result.stdout)
+    if " [" in result:
+        start_index = result.index(" [") + 2
+        end_index = result.index("] ")
+        ip_add = result[start_index:end_index]
+        print(ip_add)
+        worksheet.write(row, 0, ping_ip)
+        worksheet.write(row, 1, ip_add)
+        row += 1 
+
+workbook.close()
